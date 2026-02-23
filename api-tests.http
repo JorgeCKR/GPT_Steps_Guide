@@ -1,0 +1,147 @@
+### ============================================================
+### Taller de Creación — API Tests
+### Extensión requerida: REST Client (humao.rest-client)
+### Úsalo desde VS Code en Codespaces — Haz clic en "Send Request"
+### ============================================================
+
+@baseUrl = http://localhost:8000
+@token = PEGA_TU_TOKEN_AQUI
+
+# ─────────────────────────────────────────────────────────────
+### ✅ Health Check — verifica que el backend está corriendo
+GET {{baseUrl}}/
+Accept: application/json
+
+###
+
+# ─────────────────────────────────────────────────────────────
+### 👤 REGISTRO — crea un nuevo usuario
+# Haz clic en "Send Request" arriba de esta línea
+POST {{baseUrl}}/auth/register
+Content-Type: application/json
+
+{
+  "name": "Jorge Rodríguez",
+  "email": "jorge@test.com",
+  "password": "123456"
+}
+
+###
+
+# ─────────────────────────────────────────────────────────────
+### 🔑 LOGIN — obtén tu token JWT
+# Copia el "access_token" de la respuesta y pégalo en @token arriba
+POST {{baseUrl}}/auth/login
+Content-Type: application/json
+
+{
+  "email": "jorge@test.com",
+  "password": "123456"
+}
+
+###
+
+# ─────────────────────────────────────────────────────────────
+### 👤 MI PERFIL — requiere token
+GET {{baseUrl}}/auth/me
+Authorization: Bearer {{token}}
+
+###
+
+# ─────────────────────────────────────────────────────────────
+### 📚 MÓDULOS — lista todos los módulos del curso
+GET {{baseUrl}}/modules
+Authorization: Bearer {{token}}
+
+###
+
+# ─────────────────────────────────────────────────────────────
+### 📊 PROGRESO — progreso del usuario
+GET {{baseUrl}}/progress
+Authorization: Bearer {{token}}
+
+###
+
+# ─────────────────────────────────────────────────────────────
+### ✅ COMPLETAR MÓDULO — marcar "tiempo" como completado
+POST {{baseUrl}}/progress/tiempo
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "notes": "Aprendí a no ponerle fechas a mis metas."
+}
+
+###
+
+# ─────────────────────────────────────────────────────────────
+### 🔄 HÁBITOS — obtener hábitos de hoy
+GET {{baseUrl}}/habits?habit_date=2026-02-23
+Authorization: Bearer {{token}}
+
+###
+
+# ─────────────────────────────────────────────────────────────
+### 🔄 CREAR HÁBITO
+POST {{baseUrl}}/habits
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "habit_name": "Meditación matutina",
+  "completed": false
+}
+
+###
+
+# ─────────────────────────────────────────────────────────────
+### 📖 DIARIO — obtener entradas
+GET {{baseUrl}}/journal
+Authorization: Bearer {{token}}
+
+###
+
+# ─────────────────────────────────────────────────────────────
+### 📖 NUEVA ENTRADA DE GRATITUD
+POST {{baseUrl}}/journal
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "type": "gratitude",
+  "content": "Hoy agradezco haber aprendido algo nuevo."
+}
+
+###
+
+# ─────────────────────────────────────────────────────────────
+### 💳 ESTADO DE PAGO
+GET {{baseUrl}}/payments/status
+Authorization: Bearer {{token}}
+
+###
+
+# ─────────────────────────────────────────────────────────────
+### 🎓 SIMULAR WEBHOOK DE HOTMART
+# Simula una compra de Hotmart para probar el acceso automático
+POST {{baseUrl}}/webhooks/hotmart
+Content-Type: application/json
+hottok: tu_hottok_de_hotmart
+
+{
+  "event": "PURCHASE_COMPLETE",
+  "data": {
+    "buyer": {
+      "email": "comprador@test.com",
+      "name": "María Compradora"
+    },
+    "purchase": {
+      "transaction": "HP12345678"
+    },
+    "product": {
+      "id": 123456
+    }
+  }
+}
+
+###
