@@ -1,0 +1,45 @@
+{
+  "name": "Taller de Creación — Dev Environment",
+  "image": "mcr.microsoft.com/devcontainers/universal:2",
+
+  "features": {
+    "ghcr.io/devcontainers/features/node:1":       { "version": "18" },
+    "ghcr.io/devcontainers/features/python:1":     { "version": "3.11" },
+    "ghcr.io/devcontainers/features/postgresql:1": { "version": "15" },
+    "ghcr.io/devcontainers/features/github-cli:1": {}
+  },
+
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "ms-python.python",
+        "ms-python.vscode-pylance",
+        "esbenp.prettier-vscode",
+        "dbaeumer.vscode-eslint",
+        "PKief.material-icon-theme",
+        "humao.rest-client",
+        "mtxr.sqltools",
+        "mtxr.sqltools-driver-pg",
+        "yzhang.markdown-all-in-one",
+        "shd101wyy.markdown-preview-enhanced"
+      ],
+      "settings": {
+        "editor.formatOnSave": true,
+        "terminal.integrated.defaultProfile.linux": "bash"
+      }
+    }
+  },
+
+  "forwardPorts": [8000, 5173, 5432],
+  "portsAttributes": {
+    "8000": { "label": "Backend FastAPI",  "onAutoForward": "notify" },
+    "5173": { "label": "Web App React",    "onAutoForward": "openBrowser" },
+    "5432": { "label": "PostgreSQL",       "onAutoForward": "silent" }
+  },
+
+  "postCreateCommand": "bash .devcontainer/setup.sh",
+
+  "remoteEnv": {
+    "ENVIRONMENT": "development"
+  }
+}
